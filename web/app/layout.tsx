@@ -15,13 +15,17 @@ const rajdhani = Rajdhani({
   weight: ["400", "500", "600", "700"],
 });
 
-const baseAppId = process.env.NEXT_PUBLIC_BASE_APP_ID?.trim() ?? "";
+/** Matches Base dashboard app; override with NEXT_PUBLIC_BASE_APP_ID on Vercel if needed. */
+const DEFAULT_BASE_APP_ID = "69faf7f4e7419956c4ab4879";
+
+const baseAppId =
+  process.env.NEXT_PUBLIC_BASE_APP_ID?.trim() || DEFAULT_BASE_APP_ID;
 
 export const metadata: Metadata = {
   title: "Neon Lattice Sorter",
   description:
     "Cyberpunk mobile sorting puzzle on Base — swipe the lattice, claim your daily check-in.",
-  ...(baseAppId ? { other: { "base:app_id": baseAppId } } : {}),
+  other: { "base:app_id": baseAppId },
 };
 
 export default function RootLayout({
@@ -32,9 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${orbitron.variable} ${rajdhani.variable}`}>
       <head>
-        {baseAppId ? (
-          <meta name="base:app_id" content={baseAppId} key="base-app-id" />
-        ) : null}
+        <meta name="base:app_id" content={baseAppId} key="base-app-id" />
       </head>
       <body className="font-ui min-h-dvh overflow-x-hidden antialiased">
         <Providers>{children}</Providers>
